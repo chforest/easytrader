@@ -106,6 +106,7 @@ class ClientTrader(IClientTrader):
                 "参数 exe_path 未设置，请设置客户端对应的 exe 地址,类似 C:\\客户端安装目录\\xiadan.exe"
             )
 
+        logger.debug("connect_path = " + connect_path);
         self._app = pywinauto.Application().connect(
             path=connect_path, timeout=10
         )

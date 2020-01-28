@@ -5,6 +5,7 @@ import tempfile
 from io import StringIO
 from typing import TYPE_CHECKING, Dict, List
 
+import platform
 import pandas as pd
 import pywinauto.keyboard
 import pywinauto
@@ -184,11 +185,17 @@ class Xls(BaseStrategy):
             count -= 1
 
         temp_path = tempfile.mktemp(suffix=".csv")
+        logger.info("temp_path-->" + temp_path)
         self._set_foreground(self._trader.app.top_window())
 
-        # alt+s保存，alt+y替换已存在的文件
+        if(platform.system()=='Windows'):
+            tmp_file_path = temp_path
+        else:
+            tmp_file_path = self.normalize_path(temp_path)
+
+            # alt+s保存，alt+y替换已存在的文件
         self._trader.app.top_window().Edit1.set_edit_text(
-            self.normalize_path(temp_path)
+            tmp_file_path
         )
         self._trader.wait(0.1)
         self._trader.app.top_window().type_keys(
